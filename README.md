@@ -16,7 +16,13 @@
 
 
 
+# MITx Finnace Micro-Masters
 
 
 
+1. Foundations of Modern Finance I
+2. Foundations of Modern Finance II
+3. Financial Accounting
+4. Mathematical Methods for Quantitative Finance
+5. Derivatives Markets: Advanced Modeling and Strategies
 
