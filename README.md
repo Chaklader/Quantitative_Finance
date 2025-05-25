@@ -1,3 +1,7 @@
+# SEC-A
+
+
+
 ##### [Finance Theory I](https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/)
 
 ##### [Finance Theory II](https://ocw.mit.edu/courses/15-402-finance-theory-ii-spring-2003/)
@@ -12,11 +16,49 @@
 
 
 
+# SEC-B
+
+##### [Introduction to Computational Thinking and Data Science](https://ocw.mit.edu/courses/6-0002-introduction-to-computational-thinking-and-data-science-fall-2016/)
+
+##### [Introduction to Probability and Statistics](https://ocw.mit.edu/courses/18-05-introduction-to-probability-and-statistics-spring-2022/)
+
+##### [Optimization Methods](https://ocw.mit.edu/courses/15-093j-optimization-methods-fall-2009/)
+
+##### [Probabilistic Systems Analysis and Applied Probability](https://ocw.mit.edu/courses/6-041-probabilistic-systems-analysis-and-applied-probability-fall-2010/)
+
+##### [Probability and Random Variables](https://ocw.mit.edu/courses/18-440-probability-and-random-variables-spring-2014/)
 
 
 
 
-# MITx Finnace Micro-Masters
+
+# SEC-C
+
+
+
+##### [Theory of Probability](https://ocw.mit.edu/courses/18-175-theory-of-probability-spring-2014/)
+
+##### [Probability and Statistics in Engineering](https://ocw.mit.edu/courses/1-151-probability-and-statistics-in-engineering-spring-2005/)
+
+##### [Introduction to Stochastic Processes](https://ocw.mit.edu/courses/18-445-introduction-to-stochastic-processes-spring-2015/)
+
+##### [Advanced Stochastic Processes](https://ocw.mit.edu/courses/15-070j-advanced-stochastic-processes-fall-2013/)
+
+##### [Discrete Stochastic Processes](https://ocw.mit.edu/courses/6-262-discrete-stochastic-processes-spring-2011/)
+
+
+
+# SEC-D
+
+##### [Mathematical Statistics](https://ocw.mit.edu/courses/18-655-mathematical-statistics-spring-2016/)
+
+##### [Algorithms for Inference](https://ocw.mit.edu/courses/6-438-algorithms-for-inference-fall-2014/)
+
+##### [Topics in Mathematics with Applications in Finance](https://ocw.mit.edu/courses/18-s096-topics-in-mathematics-with-applications-in-finance-fall-2013/)
+
+
+
+# Finnace Micro-Masters - MITx
 
 
 
