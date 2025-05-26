@@ -22,11 +22,11 @@
 
 ##### [Introduction to Probability and Statistics](https://ocw.mit.edu/courses/18-05-introduction-to-probability-and-statistics-spring-2022/)
 
+##### [Probability and Random Variables](https://ocw.mit.edu/courses/18-440-probability-and-random-variables-spring-2014/)
+
 ##### [Optimization Methods](https://ocw.mit.edu/courses/15-093j-optimization-methods-fall-2009/)
 
 ##### [Probabilistic Systems Analysis and Applied Probability](https://ocw.mit.edu/courses/6-041-probabilistic-systems-analysis-and-applied-probability-fall-2010/)
-
-##### [Probability and Random Variables](https://ocw.mit.edu/courses/18-440-probability-and-random-variables-spring-2014/)
 
 
 
