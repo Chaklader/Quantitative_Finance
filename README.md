@@ -58,6 +58,36 @@
 
 
 
+
+
+
+
+# SEC-E
+
+
+
+##### Differential Equations
+
+##### Introduction to Partial Differential Equations
+
+##### Linear Algebra
+
+##### Mathematics of Machine Learning
+
+##### Matrix Calculus
+
+##### MIT 6.S191 Introduction to Deep Learning
+
+##### Multivariable Calculus
+
+##### [Advanced Partial Differential Equations with Applications](https://ocw.mit.edu/courses/18-306-advanced-partial-differential-equations-with-applications-fall-2009/)
+
+##### [Linear Partial Differential Equations](https://ocw.mit.edu/courses/18-303-linear-partial-differential-equations-fall-2006/)
+
+##### [Numerical Methods for Partial Differential Equations](https://ocw.mit.edu/courses/18-336-numerical-methods-for-partial-differential-equations-spring-2009/)
+
+
+
 # Finnace Micro-Masters - MITx
 
 
