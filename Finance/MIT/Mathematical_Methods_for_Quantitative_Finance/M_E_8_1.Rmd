@@ -1,0 +1,318 @@
+---
+title: "15.455x: Portfolio Optimization"
+subtitle: "Numerical Examples and Quadratic Programming Solutions"
+author: "Paul F. Mende"
+date: "August 26, 2021"
+output: 
+  html_notebook:
+    df_print: paged
+    toc: yes
+---
+
+# Numerical optimization
+
+The exact solutions obtained using the Lagrange multiplier method work well with a fixed number of linear equality constraints, such as the budget constraint 
+$\sum w_i=1$ that portfolio weights sum to one.  However the individual components of the weight vector are completely unconstrained.  Nothing prevents negative weights, $w_i <0$, which represent short positions, or large absolute values (e.g. $w_k = 3$), which represent highly leveraged positions.
+
+Real-world investment mandates almost always have *inequality* constraints to prevent impermissible or unreasonable capital allocations.
+In that case, numerical techniques solve for the optimal portfolio.  A frequently encountered constraint is \(w_i \ge 0\), which means that **short** positions are not allowed.  Constraints may apply at the level of individual weights (e.g., concentration limits such as $w_i \le 0.15$) or across potential sub-portfolios (e.g., risk limits for exposure to factors).  Quadratic programming handles these cases simultaneously.
+
+
+```{r Setup, message=FALSE, warning=FALSE}
+# Set notebook environment and parameters
+library(quadprog)
+library(reshape2)
+library(tidyverse)
+
+# Load plotting tools and formats
+library(ggplot2)
+theme_update(plot.title = element_text(hjust = 0.5))
+library(ggrepel)    # Adds non-overlapping labels to point plots
+library(corrplot)
+
+
+# Set your file locations here.  
+# read_csv() can read from a local director or a remote URL
+
+datafile <- "~/15.455x/michaud.csv"
+datafile <- "https://courses.edx.org/asset-v1:MITx+15.455x+3T2020+type@asset+block@michaud.csv"
+
+X       <- read_csv(dataurl)
+```
+
+
+# Example:  Global Asset Allocation
+
+Mean-variance optimization is not limited by the number of independent assets.  However it is most effective when the number is relatively small, with sufficient data to adequately estimate the parameters.  To obtain estimates for a 500x500 covariance matrix of monthly returns requires $T \gg 500$ observations.  At best, that means the model is relying on very old data; and typically, it means that many estimation and numerical errors may enter the process.
+
+Let's explore a concrete case using just eight assets, using a numerical example provided by Richard Michaud in his book "Efficient Asset Management."  We compute the various algebraic quantities derived in class, and plot the correlations and return vs. risk of the individual assets.
+
+```{r Asset risk and return}
+Corr  <- as.matrix(X[,2:9])
+Sigma <- as.vector(X$SD)
+Mu    <- as.vector(X$Mean)
+Iota  <- matrix(1,8,1)
+
+Covariance    <- diag(Sigma) %*% Corr %*% diag(Sigma)
+InvCovariance <- solve(Covariance)
+
+A <- as.numeric( t(Iota) %*% InvCovariance %*% Iota )
+B <- as.numeric( t(Iota) %*% InvCovariance %*% Mu )
+C <- as.numeric( t(Mu)   %*% InvCovariance %*% Mu )
+
+
+corrplot(Corr,type="upper")
+###plot(Sigma,Mu);grid()
+ggplot(X,aes(x=SD,y=Mean)) + geom_point(color="red",size=2) + labs(title="Monthly Return vs. Risk for Individual Assets", x="Sigma", y="Mu") + geom_label_repel(aes(label=X1),vjust=1)
+```
+
+## Minimum variance portfolio
+
+The minimum variance portfolio has negative weights, and it is highly leveraged.  Here are the numerical portfolio weights, along with those of the characteristic portfolio associated with $\mu$.  Together, linear combinations of these two portfolios sweep out the efficient frontier.
+
+```{r Minimum variance portfolio}
+
+wchar_exp <- InvCovariance %*% Iota / sum(InvCovariance %*% Iota)
+
+wchar_mu <- InvCovariance %*% Mu / sum(InvCovariance %*% Mu)
+
+cbind(wchar_exp,wchar_mu)
+barplot(sort(wchar_mu), main="Ranked weights of mu-characteristic portfolio")
+```
+# The efficient frontier in the presence of inequality constraints
+
+Most investment problems have inequality constraints in addition to equalities like the budget constraint.  For instance, a "no short position" rule requires that individual weights all be non-negative -- something that cannot be guaranteed in the exact, closed-form solution derived using Lagrange multipliers.
+
+To find the mean-variance efficient frontier in the presence of a "no short, no leverage" rule, consider the function *mvef*, which uses the quadratic programming package `quadprog()` in R.
+
+
+```{r Mean-variance efficient frontier}
+mvef <- function(Covariance,Mu,Npoints) {
+#
+# Sample program to compute the mean-variance efficient frontier
+# under typical constraints using quadratic programming.
+# See R help page for solve.QP for function call details.
+#
+# Inputs: 
+#	Covariance (matrix Nu x Nu, annualized)
+#   Mu (mean returns vector, Nu by 1, annualized)
+#	Mu_min (lower value of Mu for plot)
+#	Mu_max
+#	Npoints (number of points to compute)
+# Output:
+#	
+#   sigma_p, mu_p (Ordered pairs along the efficient frontier)
+#   weights w of the efficient portfolios, Nu x Npoints [optional]
+#  
+# [pfm 8/15/2019]
+
+require(quadprog)
+  
+# Set parameters
+
+Nu   <- length(Mu)
+Iota <- matrix(1,Nu,1)
+Zero <- matrix(0,Nu,1)
+
+epsilon <- 0.0001 # Nudge adjustment for rounding of endpoint values below
+
+# The matrix "Amat" implements 4 constraints, in conjunction with vector "bvec" below:  
+# (1) Budget: sum of weights = 1 (first column)
+# (2) Return: portfolio return constrained to have mean return Mu
+# (3) Lower bound: individual weights > 0
+# (4) Upper bound: individual weights < 1
+# Since the first two are equalities, set meq = 2.  
+# The rest are inequality constraints.
+# See documentation for solve.QP for details of signs, etc.
+
+Amat <- cbind(Iota,Mu,diag(1,Nu),diag(-1,Nu))
+meq  <- 2
+
+# Initialize risk and returns.  
+# Create a mesh of points along available values of Mu
+# Nudge endpoints slightly toward middle to avoid unsolvable constraints
+
+mu_min = min(Mu) + epsilon*(mean(Mu)- min(Mu))
+mu_max = max(Mu) - epsilon*(max(Mu) - mean(Mu))
+
+sigma_p <- matrix(0,Npoints,1)
+mu_p    <- seq(from=mu_min, to=mu_max, length=Npoints)
+w       <- matrix(0,Nu,Npoints)
+
+# For each value of expected return between upper and lower bounds, solve
+# for minimal risk portfolio
+
+for (k in 1:Npoints) {
+  bvec <- c(1,mu_p[k],Zero,-Iota)
+  opt <- solve.QP(Covariance,Zero,Amat,bvec,meq)
+  sigma_p[k] <- sqrt(2*opt$value)
+  w[,k] <- opt$solution
+}
+
+mvef <- data.frame(sigma_p, mu_p, weights=t(w))
+
+}
+
+```
+
+
+Applying this function to the global asset allocation problem,
+
+```{r Efficient frontier example}
+Npoints <- 100
+MVEF    <- mvef(Covariance,Mu,Npoints)
+
+###plot(MVEF$sigma_p,MVEF$mu_p, type="b", main="Efficient Frontier", xlab="Risk", ylab="Return");grid()
+
+# Here is the same graph created using ggplot
+MVEF.plot <- ggplot(MVEF, aes(x=sigma_p,y=mu_p)) + geom_point() + geom_path() + labs(title="Efficient Frontier", x="Risk", y="Return")
+MVEF.plot
+```
+
+For comparison, consider the unconstrained frontier.  In class, we derived the analytical form for the efficient frontier when there were only global budget constraints, without restrictions on the individual weights.  The blue line below shows the that curve.  The area between the blue and the black frontiers represent portfolios that are only feasible when individual short positions and leverage are permitted.   The original assets are shown as the red points, which can also be thought of as highly concentrated portfolios.
+
+```{r Budget-constraint-only frontier}
+# Use analytical results to get explicit closed-form hyperbola envelope function
+y <- MVEF$mu_p
+x <- sqrt((A*y^2 - 2*B*y + C)/(A*C-B^2))
+###plot(x,y,type="l");grid()
+
+# Using ggplot, we can add to an existing plot object.  The blue line is a smooth curve for frontier without inequality constraints on individual weights.  The red dots represent the individual assets.
+MVEF.plot + geom_path(data=data.frame(x,y),aes(x,y),color="blue",lwd=1) + geom_point(data=X,aes(x=SD,y=Mean),color="red",size=2)
+```
+## Portfolios on the efficient frontier
+
+This is the traditional MVO plot, showing portfolios in $n$ dimensional asset space projected down to their values in the two-dimensional space of risk and return.
+What do the actual portfolios look like as one sweeps along the curve?
+
+```{r Efficient portfolio composition}
+# Assign asset names to corresponding components of weight vectors
+names(MVEF)[3:10] = names(X)[2:9]
+MVEF.weights = gather(cbind(Point=(1:nrow(MVEF)),MVEF[,3:10]),Asset,Weight,-Point)
+ggplot() + geom_bar(data=MVEF.weights,aes(x=Point,y=Weight,fill=Asset),stat="identity") + labs(title="Portfolio composition along the efficient frontier")
+```
+
+
+## Can we find the efficient frontier in practice?
+
+The optimization methods would indeed be optimal if we knew the exact values of the inputs.  In practice, we do not; we rely on statistical estimates or perhaps other forecasting techniques to provide the required MVO inputs of a covariance matrix and a vector of expected returns.
+
+How big a problem might that difference be?  Let's explore via Monte Carlo simulation.  In each simulation, assume that the returns are generated from a jointly normal distribution for which the means and covariances are held fixed.  Draw sample of "historical" returns, and use them to find portfolios on the efficient frontier.  Because a finite length sample of returns is used to estimate $C$ and $mu$, they will differ from the "true" distribution.  The portfolios found by mean-variance optimization will generally be sub-optimal with respect to the true distribution.  We can visualize the results by taking each of the simulated "efficient" portfolios and plotting their true expected risk and return.
+
+We define an R function *mvmc* to generate a set of portfolios that are "efficient" with respect to $C_\text{sim}$ and $\mu_\text{sim}$ that are themselves estimated from simulated historical time series.
+
+```{r Mean-variance Monte Carlo}
+mvmc <- function(Covariance,Mu,Npoints) {
+#
+# Sample program to simulate "optimal" portfolios based on resampling
+# a la Michaud.
+#
+# Inputs:
+#	Covariance (matrix Nu x Nu, annualized)
+#   Mu (mean returns vector, Nu by 1, annualized)
+#	Npoints (number of points to compute)
+# Output:
+#	w_sim (weights of the simulated portfolios, Nu x Npoints)
+#   sigma_p, mu_p (Actual risk and return for generated portfolios)
+#
+# [pfm 8/15/2019]
+
+
+require(quadprog)
+
+# Set parameters
+Freq    <- 12  # Monthly returns
+Years   <- 18  # 18-year simulation period
+epsilon <- 0.0001 # Nudge factor for endpoint rounding
+
+Mu   <- matrix(Mu,ncol=1) # Set as column vector
+Nu   <- length(Mu)
+
+
+# Monte Carlo simulated returns with multivariate distribution
+
+Nt <- Years * Freq
+HalfCovariance <- chol(Covariance)
+
+# Generate return time series
+r_sim <- matrix(rnorm(Nt*Nu),nrow=Nt) %*% HalfCovariance/sqrt(Freq) + matrix(Mu/Freq,Nt,Nu,byrow=TRUE)
+
+# Estimate sample means and (co)variances from random series
+Mu_sim <- apply(r_sim,2,mean)*Freq
+Covariance_sim <- cov(r_sim) * Freq
+
+# Set range of returns for optimization.
+# Create a mesh of points along available values of Mu_sim.
+# For each mu in sample, find minimum variance portfolio with that return.
+# We nudge endpoints to round values inward in order to avoid unsolvable constraints.
+
+mu_min    <- min(Mu_sim) + epsilon*(mean(Mu_sim)- min(Mu_sim))
+mu_max    <- max(Mu_sim) - epsilon*(max(Mu_sim) - mean(Mu_sim))
+mu_sample <- seq(from=mu_min, to=mu_max, length=Npoints)
+
+
+# The matrix "Amat" implements 4 constraints.
+# (1) Budget: sum of weights = 1 (first column)
+# (2) Return: portfolio return constrainted to have mean return Mu
+# (3) Lower bound: individual weights > 0
+# (4) Upper bound: individual wieghts < 1
+# Since the first two are equalities, set meq = 2.
+# The rest are inequality constraints.
+
+
+Iota <- matrix(1,Nu,1)
+Zero <- matrix(0,Nu,1)
+Amat <- cbind(Iota,Mu_sim,diag(1,Nu),diag(-1,Nu))
+meq  <- 2
+
+# Initialize risk and returns.
+
+sigma_sim <- matrix(0,Npoints,1)
+w_sim     <- matrix(0,Nu,Npoints)
+
+# For each value of expected return between upper and lower bounds, solve
+# for minimal risk portfolio and compute risk and return
+# using ACTUAL distribution values, i.e., Covariance, not Covariance_sim.
+
+for (k in 1:Npoints) {
+  bvec         <- c(1,mu_sample[k],Zero,-Iota)
+  opt          <- solve.QP(Covariance_sim,Zero,Amat,bvec,meq)
+  sigma_sim[k] <- sqrt(2*opt$value)
+  w_sim[,k]    <- opt$solution
+}
+
+mu_p    <- t(w_sim) %*% Mu
+sigma_p <- sqrt(diag(t(w_sim) %*% Covariance %*% w_sim))
+
+mvmc    <- data.frame(mu_p,sigma_p, weights=t(w_sim))
+
+}
+
+```
+
+## Example: Simulating the use of portfolio optimization
+
+Each simulation represents what might actually be achieved in applying portfolio optimization techniques.  Because real-world applications use historical samples, not the "true" distribution (if such a thing even exists), it would be impossible to produce such a plot in practice or to know how far away we are from the "true" efficient frontier.  
+
+```{r Mean-variance uncertainty in practice}
+
+Nsimulations <- 100;
+sigma_sim    <- matrix(0,Npoints,Nsimulations)
+mu_sim       <- matrix(0,Npoints,Nsimulations)
+for (n in 1:Nsimulations) {
+  MVMC <- mvmc(Covariance,Mu,Npoints);
+  sigma_sim[,n] <- MVMC$sigma_p
+  mu_sim[,n]    <- MVMC$mu_p
+}
+
+###plot(sigma_sim,mu_sim, main="Monte Carlo Simulation of Actual Return vs. Risk of MVO Portfolios");grid()
+
+# Use ggplot to include simulation results along with envelope curve
+MVMC.melt <- cbind(melt(sigma_sim, value.name = "sigma_sim"),mu_sim=melt(mu_sim)$value)
+MVMC.plot <- ggplot(MVMC.melt,aes(x=sigma_sim,y=mu_sim))+geom_point(size=1, color="red")
+MVMC.plot +
+    geom_path(data=MVEF, aes(x=sigma_p,y=mu_p)) +
+    geom_path(data=data.frame(x,y), aes(x,y), color="blue") +
+    labs(title="Monte Carlo Simulation of Actual Return vs. Risk of MVO Portfolios", x="Risk", y="Return")
+
+```
