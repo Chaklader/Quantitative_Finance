@@ -56,11 +56,12 @@
 
 ##### [Topics in Mathematics with Applications in Finance](https://ocw.mit.edu/courses/18-s096-topics-in-mathematics-with-applications-in-finance-fall-2013/)
 
+##### [Mathematics of Machine Learning](https://ocw.mit.edu/courses/18-657-mathematics-of-machine-learning-fall-2015/)
 
 
 
-
-
+> 
+>
 
 # SEC-E
 
