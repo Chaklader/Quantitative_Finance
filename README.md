@@ -1,6 +1,52 @@
+# **Complete Sequential Learning Path**
+
+**Foundation:**
+
+1. James Stewart Calculus
+2. Paul's Differential Equations Notes
+3. David C. Lay - Linear Algebra and Its Applications
+
+**PDE Preparation:** 4. MIT 18.152 - Introduction to Partial Differential Equations
+
+- Textbook: Walter A. Strauss - Partial Differential Equations: An Introduction
+
+**Probability Foundation:** 5. MIT 18.440/18.600 - Probability and Random Variables
+
+- Textbook: Sheldon Ross - A First Course in Probability
+
+**Advanced Probability Theory:** 6. MIT 18.175 - Theory of Probability
+
+- Focus: Measure-theoretic probability, Brownian motion, martingales
+
+**Complete Stochastic Calculus:** 7. MIT 15.070j - Advanced Stochastic Processes
+
+- Textbooks: Karatzas & Shreve - Brownian Motion and Stochastic Calculus
+- Øksendal - Stochastic Differential Equations
+
+```mermaid
+flowchart TD
+   A["James Stewart<br>Calculus: Early Transcendentals"] --> D["MIT OCW 18.152<br>Introduction to Partial <br> Differential Equations"]
+   B["Paul Dawkins<br>Differential Equations Notes"] --> D
+   C["David C. Lay<br>Linear Algebra and Its <br>Applications"] --> D
+
+   D --> E["MIT OCW 18.440/18.600<br>Probability and Random <br>Variables"]
+   E --> F["MIT OCW 18.175<br>Theory of Probability"]
+   F --> G["MIT OCW 15.070j<br>Advanced Stochastic <br>Processes"]
+
+
+   I["Supporting Textbooks:<br>• Partial Differential <br>Equations: An Introduction<br> - Walter A. Strauss<br>• A First Course in <br>Probability - Sheldon Ross <br>• Brownian Motionm and <br>Stochastic Calculus <br>- Ioannis Karatzas & Steven <br>• Stochastic Differential <br>Equations -Bernt Øksendal"] --> G
+
+   style A fill:#BCFB89
+   style B fill:#BCFB89
+   style C fill:#BCFB89
+   style D fill:#9AE4F5
+   style E fill:#FBF266
+   style F fill:#FA756A
+   style G fill:#0096D9
+   style I fill:#FE9237
+```
+
 # SEC-A
-
-
 
 ##### [Finance Theory I](https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/)
 
@@ -13,8 +59,6 @@
 ##### [Investments](https://ocw.mit.edu/courses/15-433-investments-spring-2003/)
 
 ##### [Introduction to Financial and Managerial Accounting](https://ocw.mit.edu/courses/15-501-introduction-to-financial-and-managerial-accounting-spring-2004/)
-
-
 
 # SEC-B
 
@@ -30,13 +74,7 @@
 
 ##### [Optimization Methods](https://ocw.mit.edu/courses/15-093j-optimization-methods-fall-2009/)
 
-
-
-
-
 # SEC-C
-
-
 
 ##### [Theory of Probability](https://ocw.mit.edu/courses/18-175-theory-of-probability-spring-2014/)
 
@@ -48,8 +86,6 @@
 
 ##### [Discrete Stochastic Processes](https://ocw.mit.edu/courses/6-262-discrete-stochastic-processes-spring-2011/)
 
-
-
 # SEC-D
 
 ##### [Mathematical Statistics](https://ocw.mit.edu/courses/18-655-mathematical-statistics-spring-2016/)
@@ -60,14 +96,7 @@
 
 ##### [Mathematics of Machine Learning](https://ocw.mit.edu/courses/18-657-mathematics-of-machine-learning-fall-2015/)
 
-
-
-> 
->
-
 # SEC-E
-
-
 
 ##### Differential Equations
 
@@ -89,15 +118,10 @@
 
 ##### [Numerical Methods for Partial Differential Equations](https://ocw.mit.edu/courses/18-336-numerical-methods-for-partial-differential-equations-spring-2009/)
 
-
-
 # Finnace Micro-Masters - MITx
-
-
 
 1. Foundations of Modern Finance I
 2. Foundations of Modern Finance II
 3. Financial Accounting
 4. Mathematical Methods for Quantitative Finance
 5. Derivatives Markets: Advanced Modeling and Strategies
-
