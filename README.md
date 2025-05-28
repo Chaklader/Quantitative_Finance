@@ -24,6 +24,8 @@
 
 ##### [Probabilistic Systems Analysis and Applied Probability](https://ocw.mit.edu/courses/6-041-probabilistic-systems-analysis-and-applied-probability-fall-2010/)
 
+##### [Introduction to Partial Differential Equations](https://ocw.mit.edu/courses/18-152-introduction-to-partial-differential-equations-fall-2011/)
+
 ##### [Introduction to Computational Thinking and Data Science](https://ocw.mit.edu/courses/6-0002-introduction-to-computational-thinking-and-data-science-fall-2016/)
 
 ##### [Optimization Methods](https://ocw.mit.edu/courses/15-093j-optimization-methods-fall-2009/)
