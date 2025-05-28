@@ -81,7 +81,7 @@ flowchart TD
 
 ###### Advanced Courses
 
-- Optimization Methods
+-  Introduction to Convex Optimization (MIT 6.079)
 - Mathematical Statistics
 - Mathematics of Machine Learning
 
