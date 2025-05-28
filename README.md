@@ -92,3 +92,36 @@ flowchart TD
 - Financial Accounting
 - Investments
 - Topics in Mathematics with Applications in Finance
+
+
+
+
+
+#### List of Books
+
+**Foundation Mathematics:**
+
+- Calculus: Early Transcendentals - James Stewart
+- Differential Equations Notes - Paul Dawkins
+- Linear Algebra and Its Applications - David C. Lay
+
+**PDE Books:**
+
+- Partial Differential Equations: An Introduction - Walter A. Strauss
+- Partial Differential Equations - Lawrence C. Evans
+
+**Probability Books:**
+
+- A First Course in Probability - Sheldon Ross
+- A Probability Path - Sidney I. Resnick
+
+**Stochastic Calculus Books:**
+
+- Brownian Motion and Stochastic Calculus - Ioannis Karatzas & Steven Shreve
+- Stochastic Differential Equations - Bernt Øksendal
+- Stochastic Calculus for Finance I: The Binomial Asset Pricing Model - Steven E. Shreve
+- Stochastic Calculus for Finance II: Continuous-Time Models - Steven E. Shreve
+
+**Finance Books:**
+
+- Investments - Zvi Bodie, Alex Kane, Alan Marcus
