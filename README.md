@@ -102,8 +102,10 @@ flowchart TD
 **Foundation Mathematics:**
 
 - Calculus: Early Transcendentals - James Stewart
-- Differential Equations Notes - Paul Dawkins
 - Linear Algebra and Its Applications - David C. Lay
+- Elementary Differential Equations and Boundary Value Problems - William Boyce, Richard DiPrima, and Douglas Meade
+- Differential Equations with Applications and Historical Notes - George Simmons
+- Differential Equations Notes - Paul Dawkins
 
 **PDE Books:**
 
@@ -125,3 +127,20 @@ flowchart TD
 **Finance Books:**
 
 - Investments - Zvi Bodie, Alex Kane, Alan Marcus
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
