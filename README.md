@@ -1,4 +1,4 @@
-# **Mathmatics Learning Path**
+# **Financial Mathmatics**
 
 **Foundation:**
 
@@ -82,6 +82,7 @@ flowchart TD
 ###### Advanced Courses
 
 -  Introduction to Convex Optimization (MIT 6.079)
+-  Pricing Options with Mathematical Models - Caltech
 - Mathematical Statistics
 - Mathematics of Machine Learning
 
