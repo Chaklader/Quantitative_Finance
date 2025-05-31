@@ -139,9 +139,26 @@ flowchart TD
 
 
 
+# **Mathematical Finance Preparation**
 
+**Foundation (Completed):**
 
+- Calculus: Early Transcendentals - James Stewart
+- Linear Algebra and Its Applications - David C. Lay
+- Elementary Differential Equations and Boundary Value Problems - Boyce & DiPrima
 
+**Main Pathway:**
 
+1. Partial Differential Equations: An Introduction - Walter A. Strauss
+2. Basic Probability (6-8 weeks):
+   - MIT 18.440/18.600 - Probability and Random Variables
+   - A First Course in Probability - Sheldon Ross
+3. Advanced Stochastic Processes:
+   - MIT 15.070j - Advanced Stochastic Processes  (includes measure theory, Brownian motion, Itô calculus, finance applications)
 
+**Stochastic Calculus Textbooks:**
 
+- Brownian Motion and Stochastic Calculus - Ioannis Karatzas & Steven Shreve
+- Stochastic Differential Equations - Bernt Øksendal
+- Stochastic Calculus for Finance I: The Binomial Asset Pricing Model - Steven E. Shreve
+- Stochastic Calculus for Finance II: Continuous-Time Models - Steven E. Shreve
