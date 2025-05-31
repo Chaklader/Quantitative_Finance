@@ -156,3 +156,29 @@ flowchart TD
 3. MIT 15.070j - Advanced Stochastic Processes 
 4. MIT 6.079 - Introduction to Convex Optimization 
 
+
+
+
+
+
+
+
+
+
+
+# Machine Learning Books
+
+
+
+"Machine Learning Interviews" by Susan Shu Chang
+
+"Designing Machine Learning Systems" by Chip Huyen
+
+"Deep Learning from Scratch" by Seth Weidman 
+
+"Pattern Recognition and Machine Learning" by Christopher Bishop 
+
+"Hands-On Machine Learning with Scikit-Learn and TensorFlow" by Aurélien Géron 
+
+"The Hundred-Page Machine Learning Book" by Andriy Burkov 
+
