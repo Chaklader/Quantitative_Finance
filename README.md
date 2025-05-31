@@ -146,19 +146,13 @@ flowchart TD
 - Calculus: Early Transcendentals - James Stewart
 - Linear Algebra and Its Applications - David C. Lay
 - Elementary Differential Equations and Boundary Value Problems - Boyce & DiPrima
+- Partial Differential Equations: An Introduction - Walter A. Strauss
 
-**Main Pathway:**
+**Courses:**
 
-1. Partial Differential Equations: An Introduction - Walter A. Strauss
-2. Basic Probability (6-8 weeks):
-   - MIT 18.440/18.600 - Probability and Random Variables
+1. MIT 18.440/18.600 - Probability and Random Variables
    - A First Course in Probability - Sheldon Ross
-3. Advanced Stochastic Processes:
-   - MIT 15.070j - Advanced Stochastic Processes  (includes measure theory, Brownian motion, Itô calculus, finance applications)
+2. MIT 18.175 Theory of Probability 
+3. MIT 15.070j - Advanced Stochastic Processes 
+4. MIT 6.079 - Introduction to Convex Optimization 
 
-**Stochastic Calculus Textbooks:**
-
-- Brownian Motion and Stochastic Calculus - Ioannis Karatzas & Steven Shreve
-- Stochastic Differential Equations - Bernt Øksendal
-- Stochastic Calculus for Finance I: The Binomial Asset Pricing Model - Steven E. Shreve
-- Stochastic Calculus for Finance II: Continuous-Time Models - Steven E. Shreve
